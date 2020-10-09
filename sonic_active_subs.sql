@@ -8,8 +8,10 @@ WITH
         AS date_time,
       CASE WHEN status = "ACTIVE" THEN TRUE ELSE FALSE END
         AS is_active
-    FROM `flanders-raw-production.videos_sonic.subscriptions`
-    WHERE subscribedInCountry IN ('al', 'ad', 'az', 'at', 'am', 'be', 'ba', 'bg', 'by', 'hr', 'cy', 'cz', 'dk', 'ee', 'fo', 'fi', 'ax', 'fr', 'ge', 'de', 'gi', 'gr', 'va', 'hu', 'is', 'ie', 'it', 'kz', 'lv', 'li', 'lt', 'lu', 'mt', 'mc', 'md', 'me', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sm', 'rs', 'sk', 'si', 'es', 'sj', 'se', 'ch', 'tr', 'ua', 'mk', 'gb', 'gg', 'je', 'im') --European countries
+    FROM `flanders-raw-production.videos_sonic.subscriptions` AS subs
+      INNER JOIN `flanders-raw-production.socialmedia_insights.country_codes` AS countries
+        ON subs.subscribedInCountry = LOWER(countries.Two_Letter_Country_Code)
+    WHERE countries.Continent_Name = "Europe"
   ),
   
   ordered_sonic AS (
